@@ -1,7 +1,7 @@
 package com.example.w1d3_rxjavademo.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.w1d3_rxjavademo.R
 
 class MainActivity : AppCompatActivity() {

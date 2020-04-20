@@ -4,10 +4,14 @@ import android.annotation.SuppressLint
 import com.example.w1d3_rxjavademo.network.model.Airline
 import com.example.w1d3_rxjavademo.network.model.Price
 import com.example.w1d3_rxjavademo.network.model.Ticket
-import io.reactivex.Observable
+import io.reactivex.*
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 
 fun main() {
-    homework()
+    chainExample()
     Thread.sleep(3000)
 }
 
@@ -119,7 +123,8 @@ fun filterExample() {
 fun concatExample() {
     val obs1 = Observable.just(1, 1, 1)
     val obs2 = Observable.just(2, 2)
-    Observable.concat(obs1, obs2)
+    val obs3 = Observable.just("a", "b")
+    Observable.concat(obs1, obs2, obs3)
         .subscribe { x ->
             println("item: $x")
         }
@@ -231,6 +236,22 @@ fun groupByExample() {
 }
 
 /***
+ * The zip() operator will combine the values of multiple Observable together through a specific function.
+ */
+@SuppressLint("CheckResult")
+fun zipExample() {
+    Observable.zip(
+        Observable.just(
+            "Roses", "Sunflowers", "Leaves", "Clouds", "Violets", "Plastics"),
+        Observable.just(
+            "Red", "Yellow", "Green", "White or Grey", "Purple"),
+        BiFunction<String, String, String> { type, color ->
+            "$type are $color"
+        }
+    ).subscribe { v -> println("Received: $v") }
+}
+
+/***
  * Scan
  * This operator Transform each item into another item, like you did with map.
  * But also include the “previous” item when you get around to doing a transform.
@@ -247,7 +268,24 @@ fun scanExample() {
         }
 }
 
+/***
+ * This operator will repeat the emission of the values however many times we may need.
+ */
+@SuppressLint("CheckResult")
+fun repeatExample() {
+    Observable.just("Apple", "Orange", "Banana")
+        .repeat(2)
+        .subscribe { v -> println("Received: $v") }
+}
+
 ////////// Other operators
+
+fun takeExample2() {
+    Observable.just("Apple", "Orange", "Banana")
+        .take(2)
+        .subscribe { v -> println("Received: $v") }
+}
+
 /***
  * Instead of writing the array of numbers manually, you can do the same using range.
  */
@@ -311,7 +349,114 @@ data class User(val name:String, val age:Int)
 data class UserDetails(val name: String, val value: Int)
 
 
-fun homework() {
+@SuppressLint("CheckResult")
+fun exampleHowToEmitData() {
+    val stringObservable = Observable.just("a", "b")
+
+    stringObservable
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(
+            { value -> println("Received: $value") }, // onNext
+            { error -> println("Error: $error") },    // onError
+            { println("Completed!") }                 // onComplete
+        )
+}
+
+fun observableTryingToHandleBackPressure() {
+    val observable = PublishSubject.create<Int>()
+    observable.observeOn(Schedulers.computation())
+        .subscribe (
+            {
+                println("The Number Is: $it")
+            },
+            {t->
+                print(t.message)
+            }
+        )
+    for (i in 0..1000000){
+        observable.onNext(i)
+    }
+}
+
+fun flowableHandlingBackPressure() {
+    println("Back")
+    val observable = PublishSubject.create<Int>()
+    observable
+        .toFlowable(BackpressureStrategy.DROP)
+        .observeOn(Schedulers.computation())
+        .subscribe (
+            {
+                println("The Number Is: $it")
+            },
+            {t->
+                print(t.message)
+            }
+        )
+    for (i in 0..1000000){
+        observable.onNext(i)
+    }
+}
+
+fun flowableExample() {
+    Flowable.just("This is a Flowable")
+        .subscribe(
+            { value -> println("Received: $value") },
+            { error -> println("Error: $error") },
+            { println("Completed") }
+        )
+}
+
+fun maybeExample() {
+    Maybe.just("This is a Maybe")
+        .subscribe(
+            { value -> println("Received: $value") },
+            { error -> println("Error: $error") },
+            { println("Completed") }
+        )
+}
+
+fun singleExample() {
+    Single.just("This is a Single")
+        .subscribe(
+            { v -> println("Value is: $v") },
+            { e -> println("Error: $e")}
+        )
+}
+
+fun completableExample() {
+    Completable.create { emitter ->
+        emitter.onComplete()
+        emitter.onError(Exception())
+    }
+}
+
+fun completableExample2() {
+    Observable.just("Hello")
+        .doOnSubscribe { println("Subscribed") }
+        .doOnNext { s -> println("Received: $s") }
+        .doAfterNext { println("After Receiving") }
+        .doOnError { e -> println("Error: $e") }
+        .doOnComplete { println("Complete") }
+        .doFinally { println("Do Finally!") }
+        .doOnDispose { println("Do on Dispose!") }
+        .subscribe { println("Subscribe") }
+}
+
+fun subscribeOnExample() {
+    Observable.just("Apple", "Orange", "Banana")
+        .subscribeOn(Schedulers.io())
+        .subscribe{ v -> println("Received: $v") }
+}
+
+fun observerOnExample() {
+    Observable.just("Apple", "Orange", "Banana")
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe{ v -> println("Received: $v") }
+}
+
+fun chainExample2() {
     val ticket1 = Ticket(
         "a", "b", "c", "d", "e", "j", "t", 3,
         Airline(2, "delta", "o"),
