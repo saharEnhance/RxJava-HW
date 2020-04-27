@@ -1,3 +1,4 @@
+/*
 package com.example.w1d3_rxjavademo
 
 import android.annotation.SuppressLint
@@ -11,15 +12,24 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
 fun main() {
+    //chainExample()
+     //mapExample()
+//zipExample(
+    //concatExample()
+  //  mergeExample()
+    //filterExample()
+   // repeatExample()
     chainExample()
-    Thread.sleep(3000)
+        Thread.sleep(3000)
 }
 
+*/
 /***
  * There is another operator from(), which takes array of an object as input and emits
  * the object one after another same as just() operator.
  * Below is the code snippets to emit 1 to 5 integer
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun fromExample() {
     Observable.fromArray(arrayOf(1, 2, 3, 4, 5))
@@ -32,6 +42,7 @@ fun fromExample() {
 
 
 ////////// Filter operators
+*/
 /***
  * take() is counter to the skip() operator. take(n) will emit only first n data elements and
  * ignores all data elements after n elements emitted.
@@ -40,7 +51,8 @@ fun fromExample() {
  *
  * Opposite to above, takeFirst() operator will emit only first element of the data stream and
  * ignores subsequent data elements.
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun takeExample() {
     Observable.just(1, 2, 3, 4, 5)
@@ -56,10 +68,12 @@ fun takeExample() {
         }
 }
 
+*/
 /***
  * There is another operator skipLast().
  * This operator will emit only last element of the data stream.
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun skipLastExample() {
     Observable.just(1, 2, 3, 4, 5)
@@ -69,10 +83,12 @@ fun skipLastExample() {
         }
 }
 
+*/
 /***
  * skip(n) will suppress the first n items emitted by an Observable and emits data after n elements.
  * So, skip(2) will emit first 2 elements and starts from emitting the 3rd element.
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun skipExample() {
     Observable.just(1, 2, 3, 4, 5)
@@ -82,14 +98,17 @@ fun skipExample() {
         }
 }
 
+*/
 /***
  * Filter
  * Emits only those items from an Observable that pass
  * a predicate test (certain condition is met).
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun filterExample() {
-    /***
+    */
+/***
     For each input item x, if x > 10, emit it in the resulting stream. 3 out of the 6 source values in the diagram are greater than 10 so the resulting stream should emit those 3 items.
     Source stream emits item with value 2. It’s not greater than 10 so it does not get emitted by the resulting stream.
     Source stream emits item with value 30. It’s greater than 10 so the resulting stream emits it.
@@ -97,7 +116,8 @@ fun filterExample() {
     Source stream emits item with value 5. It’s not greater than 10 so it does not get emitted by the resulting stream.
     Source stream emits item with value 60. It’s greater than 10 so the resulting stream emits it.
     Source terminates which causes the resulting stream to terminate.
-     */
+     *//*
+
     Observable.just(User("a", 10), User("b", 15), User("c", 20))
         .filter { user ->
             user.age > 10
@@ -111,6 +131,7 @@ fun filterExample() {
 }
 
 ////////// Merge operators
+*/
 /***
  * merge() operator works same as the concat() operator and combines data stream from two different
  * observables. The only difference between merge() and concat() operator is merge can interleave
@@ -118,7 +139,8 @@ fun filterExample() {
  * streams.
  * So, unlike concat() operator merge() operator doesn’t wait for data from observable 1 to complete.
  * It emits data from both the observable simultaneously as soon as the data becomes available to emit.
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun concatExample() {
     val obs1 = Observable.just(1, 1, 1)
@@ -131,10 +153,12 @@ fun concatExample() {
 }
 
 
+*/
 /***
  * As the name suggest, you can use concat() operator to concat two different observable and emit
  * the data stream for both the operators one after another.
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun mergeExample() {
     val obs1 = Observable.just(1, 1, 1, 1, 1, 1)
@@ -145,10 +169,12 @@ fun mergeExample() {
         }
 }
 
+*/
 /***
  * Transforms the items emitted by an Observable by applying a
  * function to each item (or converting from one item type into another).
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun mapExample() {
     Observable.just(1, 2, 3)
@@ -160,6 +186,7 @@ fun mapExample() {
         }
 }
 
+*/
 /***
  * Transforms the items in Observable stream into separate
  * Observables, then flattens them into a single Observable stream.
@@ -175,7 +202,8 @@ fun mapExample() {
  * looked up from the database on the IO thread using the
  * subscribeOn(Schedulers.io()) operator.
  * Note that flatMap() does not guarantee the order of the items in the resulting stream.
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun flatMapExample() {
     Observable.just(User("a", 10), User("b", 15), User("c", 20))
@@ -187,12 +215,14 @@ fun flatMapExample() {
         }
 }
 
+*/
 /***
  * SwitchMap
  * Whenever a new item is emitted by the Observable, it will unsubscribe to the Observable that was
  * generated from the previously emitted item and begin only mirroring the current one.
  * In other words, it returns the latest Observable and emits the items from it.
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun switchMapExample() {
     Observable.range(1, 20)
@@ -207,6 +237,7 @@ fun switchMapExample() {
             println("Item = $userDetails")
         }
 }
+*/
 /***
  * Map operator can be used when we fetch items from the server and need to modify it before emitting to the UI.
  *
@@ -215,15 +246,18 @@ fun switchMapExample() {
  * SwitchMap is best suited for scenarios such as a feed page, when pull to refresh is enabled.
  * When user refreshes the screen, the older feed response is ignored and only the latest request
  * results are emitted to the UI when using a SwitchMap.
- */
+ *//*
 
+
+*/
 /***
  * GroupBy
  * This operator divides an Observable into a set of Observables that each emit a different group
  * of items from the original Observable, organised by key.
  * Sample Implementation: The below code will create an Observable with range of 1 to 10 numbers.
  * We use the groupBy() operator to emit only even numbers from the list.
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun groupByExample() {
     Observable.range(1, 20)
@@ -235,9 +269,11 @@ fun groupByExample() {
         }
 }
 
+*/
 /***
  * The zip() operator will combine the values of multiple Observable together through a specific function.
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun zipExample() {
     Observable.zip(
@@ -251,11 +287,13 @@ fun zipExample() {
     ).subscribe { v -> println("Received: $v") }
 }
 
+*/
 /***
  * Scan
  * This operator Transform each item into another item, like you did with map.
  * But also include the “previous” item when you get around to doing a transform.
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun scanExample() {
     Observable.range(1, 20)
@@ -268,9 +306,11 @@ fun scanExample() {
         }
 }
 
+*/
 /***
  * This operator will repeat the emission of the values however many times we may need.
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun repeatExample() {
     Observable.just("Apple", "Orange", "Banana")
@@ -286,9 +326,11 @@ fun takeExample2() {
         .subscribe { v -> println("Received: $v") }
 }
 
+*/
 /***
  * Instead of writing the array of numbers manually, you can do the same using range.
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun rangeExample() {
     Observable.range(1, 20)
@@ -297,10 +339,12 @@ fun rangeExample() {
         }
 }
 
+*/
 /***
  * Buffer This operator periodically gather items from an Observable into bundles and emit these
  * bundles rather than emitting the items one at a time.
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun bufferExample() {
     Observable.range(1, 20)
@@ -313,6 +357,7 @@ fun bufferExample() {
         }
 }
 
+*/
 /***
  * Chaining multiple operators
  * Sometimes the desired data stream can’t achieved using a single operator.
@@ -323,7 +368,8 @@ fun bufferExample() {
  * map(): Map transform the data from Integer to String by appending the string at the end
  * In the operator chain, filter() will be executed first and map() takes the result from
  * filter and performs it’s job
- */
+ *//*
+
 @SuppressLint("CheckResult")
 fun chainExample() {
     Observable.range(1, 20)
@@ -501,4 +547,4 @@ fun chainExample2() {
             println("Item = $x")
         }
 
-}
+}*/

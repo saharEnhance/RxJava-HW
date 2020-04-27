@@ -1,21 +1,22 @@
 package com.example.w1d3_rxjavademo.network.model
 
-data class Airline(val id: Int, val name: String, val logo: String) {
-    override fun toString(): String {
-        return "Airline(id=$id, name='$name', logo='$logo')"
-    }
-}
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+
+data class Airline(val id: Int, val name: String, val logo: String)
 data class Price(val price: Float, val seats: String, val currency: String,
+                 @Expose
+                 @SerializedName("flight_number")
                  val flightNumber: String,
-                 val from: String, val to: String) {
-    override fun toString(): String {
-        return "Price(price=$price, seats='$seats', currency='$currency', flightNumber='$flightNumber', from='$from', to='$to')"
-    }
-}
+                 val from: String, val to: String)
 
 data class Ticket(val from: String, val to: String,
                   val departure: String, val arrival: String, val duration: String, val instructions: String,
+                  @Expose
+                  @SerializedName("flight_number")
                   val flightNumber: String,
+                  @Expose
+                  @SerializedName("stops")
                   val numberOfStops: Int,
                   val airline: Airline, var price: Price?
 ) {
@@ -33,9 +34,4 @@ data class Ticket(val from: String, val to: String,
         hash = 53 * hash + flightNumber.hashCode()
         return hash
     }
-
-    override fun toString(): String {
-        return "Ticket(from='$from', to='$to', departure='$departure', arrival='$arrival', duration='$duration', instructions='$instructions', flightNumber='$flightNumber', numberOfStops=$numberOfStops, airline=$airline, price=$price)"
-    }
-
 }
